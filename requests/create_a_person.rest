@@ -1,0 +1,31 @@
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "VS Code REST Client testing an HTTP POST",
+    "number": 12345
+}
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "VS Code REST Client testing an HTTP POST",
+    "number": null
+}
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": null,
+    "number": 12345
+}
+###
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{
+    "name": "Ryan Bennett",
+    "number": 8476209643
+}

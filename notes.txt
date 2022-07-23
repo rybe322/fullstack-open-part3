@@ -1,3 +1,24 @@
 --------------------
 Note file for part 3 
 --------------------
+- Building backend ontop of NodeJS, JS runtime based on GGLE Chrome V8 JS engine
+- npm is a tool used for managing JS packages.
+
+
+-------------------
+INITIALIZATION
+-------------------
+1. npm init
+  - automatically generates a package.json file.
+2. add "start": "node index.js" to the package.json file.
+  - can run the the program with either node index.js or npm start
+  - customary for npm projects to execute with such scripts.
+3. npm install express
+  - Could implement backend server but becomes a problem as project grows.
+  - express is the most popular library to build a backend server.
+  - Source code is placed in the node_modules directory at root of project
+4. npm install --save-dev nodemon
+  - This package will automatically restart application when files change.
+5. Add "dev": "nodemon index.js" to package.json under scripts.
+  - Have to start it with node_modules/.bin/nodemon index.js otherwise
+  - Can now start by running command npm run dev
