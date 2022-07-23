@@ -1,8 +1,42 @@
 const { response } = require('express')
-const express = require('express')
-const app = express()
+const express = require('express') // import express
+var morgan = require('morgan')
+
+const app = express() // Creates an express application
 
 app.use(express.json())
+app.use(morgan('tiny'))
+
+
+/*
+MIDDLEWARE
+*/
+app.use('/api/persons', (req, res, next) => {
+    console.log('This is a test application-level middleware', Date.now())
+    console.log("request type:  ", req.method)
+    next()
+})
+
+app.use('/api/persons/:id', (req, res, next) => {
+    console.log("Person looked up from an application-level middleware")
+    console.log("request type: ", req.method)
+    next()
+})
+
+const requestLogger = (req, res, next) => {
+    console.log('-------------')
+    console.log('Method: ', req.method)
+    console.log('Path', req.path)
+    console.log('Body', req.body)
+    console.log('-------------')
+    next()
+}
+
+app.use(requestLogger)
+
+/*
+DUMMY JSON 
+*/
 
 let persons = [{ 
     "id": 1,
@@ -25,6 +59,9 @@ let persons = [{
     "number": "39-23-6423122"
     }]
 
+/*
+ROUTES
+*/
 app.get('/', (request, response) => {
     response.send('<h3>Hello world</h3>')
 })
@@ -87,6 +124,14 @@ app.post('/api/persons', (request, response) => {
     persons = persons.concat(person)
     response.json(person)
 })
+
+/*
+MIDDLEWARE THAT RUNS AFTER ROUTES
+*/
+const unkownEndpoint = (req, res) => {
+    res.status(404).send({error: 'unknown endpoint' })
+}
+app.use(unkownEndpoint)
 
 
 const PORT = 3001
