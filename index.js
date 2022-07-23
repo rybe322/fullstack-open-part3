@@ -1,11 +1,13 @@
 const { response } = require('express')
 const express = require('express') // import express
 var morgan = require('morgan')
+const cors = require('cors')
 
 const app = express() // Creates an express application
 
 app.use(express.json())
 app.use(morgan('tiny'))
+app.use(cors())
 
 
 /*
