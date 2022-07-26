@@ -3,7 +3,7 @@ Content-Type: application/json
 
 {
     "name": "VS Code REST Client testing an HTTP POST",
-    "number": 12345
+    "number": 2
 }
 ###
 POST http://localhost:3001/api/persons
