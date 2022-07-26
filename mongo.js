@@ -45,11 +45,12 @@ if (process.argv.length > 3){
     .connect(url)
     .then(response => {
         console.log('connected')
-        Person.find({}).then(result => {
-            result.forEach(person => {
-                console.log(person)
+        Person.find({}).then(persons => {
+            console.log('-------PHONEBOOK-------')
+            persons.forEach(person => {
+                console.log(`${person.name}:  ${person.number}`)
             })
-            mongoose.connection.close()
+            return mongoose.connection.close()
         })
     })
     .catch((err) => console.log(err))

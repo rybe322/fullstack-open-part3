@@ -1,7 +1,10 @@
+require('dotenv').config()
 const { response } = require('express')
 const express = require('express') // import express
 var morgan = require('morgan')
 const cors = require('cors')
+const mongoose = require('mongoose')
+const Person = require('./models/person')
 
 const app = express() // Creates an express application
 
@@ -71,7 +74,9 @@ app.get('/', (request, response) => {
 
 // Fetch all persons
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+    Person.find({}).then(persons => {
+        response.json(persons)
+    })
 })
 
 // Info page
@@ -82,15 +87,9 @@ app.get('/api/info', (request, response) => {
 
 // Generate information for a single entry
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(p => p.id === id)
-    console.log("You are getting",person)
-
-    if (person) {
+    Person.findById(request.params.id).then(person => {
         response.json(person)
-    }else {
-        response.status(404).end()
-    }
+    })
 })
 
 // Delete a single entry 
@@ -109,23 +108,16 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-
-    console.log('body', body)
-    if (!body.name) {
-        return response.status(400).json({error: 'name is missing'})
-    }else if(!body.number) {
-        return response.status(400).json({error: 'Number cannot be missing'})
-    }else if ((persons.find(p => p.name === body.name)) !== undefined) {
-        return response.status(400).json({error: "Duplicate entry"})
+    if(!body.name || !body.number) {
+        return response.status(404).json({ error: 'content missing' })
     }
-    
-    const person = {
-        id: generateId(),
+    const person = new Person({
         name: body.name,
         number: body.number,
-    }
-    persons = persons.concat(person)
-    response.json(person)
+    })
+    person.save().then(savedPerson => {
+        response.json(savedPerson)
+    })
 })
 
 /*
